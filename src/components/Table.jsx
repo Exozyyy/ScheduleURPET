@@ -1,119 +1,74 @@
 import React, { useState, useEffect } from 'react'
+import * as XLSX from 'xlsx'
 
-const Timetable = () => {
+const TableHac = () => {
 	const [timetable, setTimetable] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
 
 	useEffect(() => {
-		const localData = [
-			{
-				date: '07.04.2025',
-				sessions: [
-					{
-						time: '9:00-10:30',
-						subject: 'Обеспечение качества функционирования КС',
-						teacher: 'Бушева Е.В.',
-						location: 'вебинар',
-					},
-					{
-						time: '10:45-12:15',
-						subject: 'Обеспечение качества функционирования КС',
-						teacher: 'Бушева Е.В.',
-						location: 'вебинар',
-					},
-					{
-						time: '13:00-14:30',
-						subject: 'Внедрение и поддержка компьютерных систем',
-						teacher: 'Бушева Е.В.',
-						location: 'вебинар',
-					},
-					{
-						time: '14:40-16:10',
-						subject: 'Внедрение и поддержка компьютерных систем',
-						teacher: 'Бушева Е.В.',
-						location: 'вебинар',
-					},
-					{
-						time: '16:20-17:50',
-						subject: 'Системное программирование',
-						teacher: 'Старцев К.М.',
-						location: 'Кабинет 308',
-					},
-					{
-						time: '18:00-19:30',
-						subject: 'Системное программирование',
-						teacher: 'Старцев К.М.',
-						location: 'Кабинет 308',
-					},
-				],
-			},
-			{
-				date: '08.04.2025',
-				sessions: [
-					{
-						time: '9:00-10:30',
-						subject: 'Обеспечение качества функционирования КС',
-						teacher: 'Бушева Е.В.',
-						location: 'вебинар',
-					},
-					{
-						time: '10:45-12:15',
-						subject: 'Обеспечение качества функционирования КС',
-						teacher: 'Бушева Е.В.',
-						location: 'вебинар',
-					},
-					{
-						time: '13:00-14:30',
-						subject: 'Системное программирование',
-						teacher: 'Старцев К.М.',
-						location: 'Кабинет 308',
-					},
-					{
-						time: '14:40-16:10',
-						subject: 'Системное программирование',
-						teacher: 'Старцев К.М.',
-						location: 'Кабинет 308',
-					},
-					{
-						time: '16:20-17:50',
-						subject: 'Системное программирование',
-						teacher: 'Старцев К.М.',
-						location: 'Кабинет 308',
-					},
-					{
-						time: '18:00-19:30',
-						subject: 'Системное программирование',
-						teacher: 'Старцев К.М.',
-						location: 'Кабинет 308',
-					},
-				],
-			},
-		]
+		const fetchData = async () => {
+			try {
+				const response = await fetch('/schedule.xlsx')
+				if (!response.ok) {
+					throw new Error('Ошибка при загрузке файла')
+				}
+				const abuf = await response.arrayBuffer()
 
-		setTimeout(() => {
-			setTimetable(localData)
-			setLoading(false)
-		}, 1000)
+				const workbook = XLSX.read(abuf, { type: 'array' })
+				const sheetName = workbook.SheetNames[0]
+				const sheet = workbook.Sheets[sheetName]
+				const data = XLSX.utils.sheet_to_json(sheet, { header: 1 })
+
+				const parsedData = parseExcelData(data)
+				setTimetable(parsedData)
+				console.log(parsedData)
+				setLoading(false)
+			} catch (error) {
+				setError(error)
+				setLoading(false)
+			}
+		}
+
+		fetchData()
 	}, [])
 
-	// useEffect(() => {
-	//   fetch('/api/timetable')
-	//     .then((response) => {
-	//       if (!response.ok) {
-	//         throw new Error('Ошибка сети');
-	//       }
-	//       return response.json();
-	//     })
-	//     .then((data) => {
-	//       setTimetable(data);
-	//       setLoading(false);
-	//     })
-	//     .catch((error) => {
-	//       setError(error);
-	//       setLoading(false);
-	//     });
-	// }, []);
+	const parseExcelData = (data) => {
+		const timetableData = []
+		let currentDate = ''
+		let currentSessions = []
+
+		data.forEach((row, index) => {
+			if (index < 1) return // Пропускаем первые строки
+
+			const [date, ...sessions] = row
+
+			if (date && date.includes('пара')) {
+				if (currentDate) {
+					timetableData.push({ date: currentDate, sessions: currentSessions })
+				}
+				currentDate = date
+				currentSessions = sessions.map((session, i) => {
+					const time = row[i * 2] // Время для пары
+					const group = session || '' // Название группы
+					const location = row[i * 2 + 1] || '' // Номер кабинета
+
+					return {
+						time,
+						group,
+						location,
+					}
+				})
+			}
+		})
+
+		if (currentDate) {
+			timetableData.push({ date: currentDate, sessions: currentSessions })
+		}
+
+		return timetableData
+	}
+
 	if (loading) {
 		return <div>Загрузка...</div>
 	}
@@ -126,27 +81,21 @@ const Timetable = () => {
 		<div className="timetable-container">
 			<table>
 				<thead>
-					<tr>
-						<th>Дата</th>
-						<th>1 пара</th>
-						<th>2 пара</th>
-						<th>3 пара</th>
-						<th>4 пара</th>
-						<th>5 пара</th>
-						<th>6 пара</th>
-					</tr>
+					<tr></tr>
 				</thead>
 				<tbody>
 					{timetable.map((day, index) => (
 						<tr key={index}>
 							<td>{day.date}</td>
 							{day.sessions.map((session, i) => (
-								<td key={i}>
-									<div>{session.time}</div>
-									<div>{session.subject}</div>
-									<div>{session.teacher}</div>
-									<div>{session.location}</div>
-								</td>
+								<React.Fragment key={i}>
+									<td>
+										<div>
+											{/* {`${date}`} */}
+											{`${session.group}`}
+										</div>
+									</td>
+								</React.Fragment>
 							))}
 						</tr>
 					))}
@@ -156,4 +105,4 @@ const Timetable = () => {
 	)
 }
 
-export default Timetable
+export default TableHac
