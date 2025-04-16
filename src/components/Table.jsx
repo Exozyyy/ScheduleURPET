@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import * as XLSX from 'xlsx'
+import * as XLSX from 'xlsx'
 
 const TableHac = () => {
 	const [timetable, setTimetable] = useState([])
@@ -86,7 +87,7 @@ const TableHac = () => {
 				<tbody>
 					{timetable.map((day, index) => (
 						<tr key={index}>
-							<td>{day.date}</td>
+							<td rowSpan={day.sessions.length}>{day.date}</td>
 							{day.sessions.map((session, i) => (
 								<React.Fragment key={i}>
 									<td>
