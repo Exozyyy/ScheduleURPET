@@ -40,7 +40,7 @@ const TableHac = () => {
 		let currentSessions = []
 
 		data.forEach((row, index) => {
-			if (index < 1) return // Пропускаем первые строки
+			if (index < 1) return
 
 			const [date, ...sessions] = row
 
