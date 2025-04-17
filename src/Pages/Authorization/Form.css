@@ -1,0 +1,180 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #f7fafc;
+	font-family: 'Roboto', sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+h2 {
+	font-size: 2.5rem;
+	color: #333;
+	margin-bottom: 1.5rem;
+	text-align: center;
+	animation: fadeIn 1s ease-out;
+}
+
+form {
+	background-color: #ffffff;
+	border-radius: 8px;
+	padding: 2rem;
+	width: 100%;
+	max-width: 400px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	animation: slideIn 0.5s ease-out;
+}
+
+div {
+	margin-bottom: 1.5rem;
+}
+
+label {
+	font-size: 1rem;
+	color: #666;
+	display: block;
+	margin-bottom: 0.5rem;
+	transition: color 0.3s ease;
+}
+
+input {
+	width: 100%;
+	padding: 1rem;
+	font-size: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+	outline: none;
+	border-color: #5a4ad1;
+	box-shadow: 0 0 8px rgba(90, 74, 209, 0.5);
+}
+
+input:focus + label {
+	color: #5a4ad1;
+}
+
+button {
+	width: 100%;
+	padding: 1rem;
+	background-color: #e85c50;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 1.1rem;
+	cursor: pointer;
+	transition: transform 0.2s, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+button:hover {
+	background-color: #d84e42;
+	transform: scale(1.05);
+	box-shadow: 0 8px 16px rgba(232, 92, 80, 0.3);
+}
+
+button:active {
+	transform: scale(1);
+}
+
+#register {
+	margin-top: 1rem;
+	text-align: center;
+	font-size: 0.9rem;
+}
+
+#register a {
+	color: #5a4ad1;
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+#register a:hover {
+	color: #4a3bb3;
+}
+
+#error {
+	color: red;
+	font-size: 0.9rem;
+	margin-top: 1rem;
+	text-align: center;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateY(-50px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+/* Контейнер для направления и номера группы */
+.group-container {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 1.5rem;
+}
+
+/* Каждый отдельный блок для поля (группа и номер группы) */
+.group-container > div {
+	flex: 1;
+}
+
+/* Стили для меток */
+.group-container label {
+	font-size: 1rem;
+	color: #666;
+	display: block;
+	margin-bottom: 0.5rem;
+	transition: color 0.3s ease;
+}
+
+/* Стили для селекта (направление) */
+.group-container select {
+	width: 100%;
+	padding: 1rem;
+	font-size: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	transition: border-color 0.3s ease;
+}
+
+/* Фокус на поле select */
+.group-container select:focus {
+	outline: none;
+	border-color: #5a4ad1;
+}
+
+/* Стили для поля ввода для номера группы */
+.group-container input {
+	width: 100%;
+	padding: 1rem;
+	font-size: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	transition: border-color 0.3s ease;
+}
+
+/* Фокус на поле ввода номера группы */
+.group-container input:focus {
+	outline: none;
+	border-color: #5a4ad1;
+}

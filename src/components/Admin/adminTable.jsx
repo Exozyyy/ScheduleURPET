@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-const TableHac = () => {
+const TableHacAdmin = () => {
 	const [schedule, setSchedule] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(null)
-	const [editedCell, setEditedCell] = useState({}) // Для отслеживания редактируемой ячейки
-	const [isEditing, setIsEditing] = useState(false) // Состояние редактирования
+	const [editedCell, setEditedCell] = useState({})
+	const [isEditing, setIsEditing] = useState(false)
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -13,13 +13,13 @@ const TableHac = () => {
 			try {
 				const response = await fetch('/api/schedule')
 				if (!response.ok) {
-					throw new Error(response.statusText)
+					throw new Error('Ошибка при загрузке данных')
 				}
 				const data = await response.json()
 				setSchedule(data.schedule)
-				setLoading(false)
 			} catch (error) {
-				setError('Ошибка при загрузке данных')
+				setError(error.message)
+			} finally {
 				setLoading(false)
 			}
 		}
@@ -159,4 +159,4 @@ const TableHac = () => {
 	)
 }
 
-export default adminTable
+export const PageAdmin = () => <TableHacAdmin />

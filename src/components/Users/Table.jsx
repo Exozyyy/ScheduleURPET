@@ -6,25 +6,25 @@ const TableHac = () => {
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(null)
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		setLoading(true)
-	// 		try {
-	// 			const response = await fetch('/api/schedule')
-	// 			if (!response.ok) {
-	// 				throw new Error(response.statusText)
-	// 			}
-	// 			const data = await response.json()
-	// 			setSchedule(data.schedule)
-	// 			setLoading(false)
-	// 		} catch (error) {
-	// 			setError(error.message)
-	// 			setLoading(false)
-	// 		}
-	// 	}
+	useEffect(() => {
+		const fetchData = async () => {
+			setLoading(true)
+			try {
+				const response = await fetch('/api/schedule')
+				if (!response.ok) {
+					throw new Error(response.statusText)
+				}
+				const data = await response.json()
+				setSchedule(data.schedule)
+				setLoading(false)
+			} catch (error) {
+				setError(error.message)
+				setLoading(false)
+			}
+		}
 
-	// 	fetchData()
-	// }, [])
+		fetchData()
+	}, [])
 
 	if (loading) {
 		return <div>Загрузка...</div>
