@@ -10,7 +10,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh; /* Это гарантирует, что body будет заполнять всю высоту экрана */
+	min-height: 100vh;
 	padding: 20px;
 }
 
@@ -24,8 +24,8 @@ body {
 	animation: slideIn 0.5s ease-out;
 	display: flex;
 	flex-direction: column;
-	max-height: 90vh; /* Ограничиваем контейнер по высоте */
-	overflow-y: auto; /* Добавляем вертикальный скролл при переполнении */
+	max-height: 80vh;
+	overflow-y: hidden;
 }
 
 h2 {
@@ -61,11 +61,13 @@ h2 {
 	border-color: #5a4ad1;
 }
 
-/* Таблица расписания */
 table {
 	width: 100%;
 	border-collapse: collapse;
 	margin-top: 1.5rem;
+	max-height: 70vh;
+	overflow-y: auto;
+	display: block;
 }
 
 th,
@@ -91,7 +93,27 @@ td[colspan='5'] {
 	background-color: #f0f0f0;
 }
 
-/* Ключевая анимация для плавного появления */
+button {
+	background-color: #5a4ad1;
+	color: white;
+	font-size: 1rem;
+	padding: 0.75rem 1.5rem;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	margin-bottom: 20px;
+}
+
+button:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+	background-color: #4b39b7;
+}
+
 @keyframes slideIn {
 	from {
 		transform: translateY(-50px);
@@ -102,6 +124,24 @@ td[colspan='5'] {
 		opacity: 1;
 	}
 }
-.buttonForTeacher {
-	margin-bottom: 50px;
+
+div[style='color: red'] {
+	font-size: 1rem;
+	color: red;
+	margin-top: 20px;
+}
+
+input {
+	width: 100%;
+	padding: 1rem;
+	font-size: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	margin-bottom: 20px;
+	transition: border-color 0.3s ease;
+}
+
+input:focus {
+	outline: none;
+	border-color: #5a4ad1;
 }

@@ -5,7 +5,7 @@ const TableHac = () => {
 	const [schedule, setSchedule] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(null)
-	const [group, setGroup] = useState('ИСИП-306') // Изначально группа 'ИСИП-306'
+	const [group, setGroup] = useState('ИСИП-306')
 
 	const groupOptions = [
 		'ИСИП-118',

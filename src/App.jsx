@@ -5,6 +5,7 @@ import { PageAdmin } from './components/Admin/adminTable'
 import { HomePage } from './Pages/HomePage'
 import { Register } from './Pages/Authorization/RegisterForm'
 import { Login } from './Pages/Authorization/LoginForm'
+import { PageTeachers } from './components/Admin/Schedule'
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 				<Route path="/" element={<HomePage />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/login" element={<Login />} />
+				<Route path="/scheduleteachers" element={<PageTeachers />} />
 			</Routes>
 		</BrowserRouter>
 	)

@@ -7,7 +7,8 @@ const TableHacAdmin = () => {
 	const [editedCell, setEditedCell] = useState({})
 	const [isEditing, setIsEditing] = useState(false)
 	const [editedSchedule, setEditedSchedule] = useState(null) // Track edited data
-	const [group, setGroup] = useState('ИСИП-306')
+	const [group, setGroup] = useState('ИСИП-309')
+	const [teacher, setTeacher] = useState('') // Track teacher name
 	const [isSaved, setIsSaved] = useState(true) // To track whether the data is saved
 
 	useEffect(() => {
@@ -30,6 +31,24 @@ const TableHacAdmin = () => {
 
 		fetchData()
 	}, [group])
+	useEffect(() => {
+		const fetchData = async () => {
+			setLoading(true)
+			try {
+				const response = await fetch(`http://127.0.0.1:8000/by-teacher?name=${teacher}`)
+				if (!response.ok) {
+					throw new Error('Ошибка при загрузке данных')
+				}
+				const data = await response.json()
+				console.log(data)
+				setSchedule(data.schedule)
+			} catch (error) {
+				setError(error.message)
+			} finally {
+				setLoading(false)
+			}
+		}
+	})
 
 	const handleCellClick = (dayIndex, sessionIndex, field) => {
 		setEditedCell({ dayIndex, sessionIndex, field })
@@ -70,7 +89,7 @@ const TableHacAdmin = () => {
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ schedule: editedSchedule }), // Send the edited data
+					body: JSON.stringify({ schedule: editedSchedule }),
 				})
 
 				if (!response.ok) {
@@ -80,9 +99,8 @@ const TableHacAdmin = () => {
 				const result = await response.json()
 				console.log(result)
 
-				// If save was successful, update the schedule
 				setSchedule(editedSchedule)
-				setIsSaved(true) // Mark as saved
+				setIsSaved(true)
 				alert('Расписание успешно сохранено!')
 			} catch (error) {
 				setError(error.message)
@@ -102,7 +120,10 @@ const TableHacAdmin = () => {
 
 	return (
 		<div className="timetable-container">
-			{/* Выпадающий список для выбора группы */}
+			<button id="buttonForTeacher" onClick={() => (window.location.href = '/scheduleteachers')}>
+				Расписание для учителей
+			</button>
+
 			<div className="group-select">
 				<label htmlFor="group-select">Выберите группу: </label>
 				<select id="group-select" value={group} onChange={handleGroupChange}>
@@ -132,10 +153,7 @@ const TableHacAdmin = () => {
 				</select>
 			</div>
 
-			{/* Кнопка сохранения */}
 			{!isSaved && <button onClick={handleSave}>Сохранить изменения</button>}
-
-			{/* Таблица расписания */}
 			<table>
 				<thead>
 					<tr>

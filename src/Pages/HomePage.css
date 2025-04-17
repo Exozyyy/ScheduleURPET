@@ -4,37 +4,37 @@
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	background-color: #e8eff1; /* Легкий голубой фон */
-	font-family: 'Roboto', sans-serif; /* Современный шрифт */
-	transition: background-color 0.5s ease; /* Плавный переход для фона */
+	background-color: #e8eff1;
+	font-family: 'Roboto', sans-serif;
+	transition: background-color 0.5s ease;
 }
 
 .header {
 	text-align: center;
 	margin-bottom: 2rem;
-	animation: fadeIn 1s ease-in-out; /* Анимация для заголовка */
+	animation: fadeIn 1s ease-in-out;
 }
 
 .title {
-	font-size: 3rem; /* Большее значение для заголовка */
-	font-weight: 700; /* Сделаем текст жирным */
-	color: #333333; /* Темно-серый цвет */
-	transition: transform 0.3s ease; /* Анимация для заголовка */
+	font-size: 3rem;
+	font-weight: 700;
+	color: #333333;
+	transition: transform 0.3s ease;
 }
 
 .title:hover {
-	transform: translateY(-5px); /* Поднятие текста при наведении */
+	transform: translateY(-5px);
 }
 
 .subtitle {
-	font-size: 1.4rem; /* Увеличенный размер подзаголовка */
-	color: #4a5568; /* Светло-серый для подзаголовка */
+	font-size: 1.4rem;
+	color: #4a5568;
 	margin-top: 0.5rem;
-	transition: opacity 0.3s ease; /* Плавное исчезание */
+	transition: opacity 0.3s ease;
 }
 
 .subtitle:hover {
-	opacity: 0.8; /* Легкое уменьшение непрозрачности */
+	opacity: 0.8;
 }
 
 .button-container {
@@ -44,50 +44,49 @@
 
 .btn-primary {
 	padding: 1.2rem 2.5rem;
-	background-color: #6c63ff; /* Ярко-фиолетовый */
+	background-color: #6c63ff;
 	color: white;
 	border: none;
 	border-radius: 0.5rem;
-	font-size: 1.1rem; /* Немного больший размер шрифта */
+	font-size: 1.1rem;
 	cursor: pointer;
-	transition: background-color 0.3s, transform 0.3s ease; /* Плавный переход для фона и трансформации */
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень */
+	transition: background-color 0.3s, transform 0.3s ease;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
-	background-color: #5a4ad1; /* Темнее фиолетовый */
-	transform: translateY(-3px); /* Легкое поднятие при наведении */
+	background-color: #5a4ad1;
+	transform: translateY(-3px);
 }
 
 .btn-secondary {
 	padding: 1.2rem 2.5rem;
-	background-color: #ff6f61; /* Теплый коралловый */
+	background-color: #ff6f61;
 	color: white;
 	border: none;
 	border-radius: 0.5rem;
-	font-size: 1.1rem; /* Немного больший размер шрифта */
+	font-size: 1.1rem;
 	cursor: pointer;
-	transition: background-color 0.3s, transform 0.3s ease; /* Плавный переход для фона и трансформации */
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень */
+	transition: background-color 0.3s, transform 0.3s ease;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-secondary:hover {
-	background-color: #e85c50; /* Темнее коралловый */
-	transform: translateY(-3px); /* Легкое поднятие при наведении */
+	background-color: #e85c50;
+	transform: translateY(-3px);
 }
 
 .footer {
 	margin-top: 2rem;
-	font-size: 1rem; /* Чуть увеличенный размер шрифта */
+	font-size: 1rem;
 	color: #4a5568;
-	transition: opacity 0.3s ease; /* Плавное исчезание */
+	transition: opacity 0.3s ease;
 }
 
 .footer:hover {
-	opacity: 0.7; /* Легкое уменьшение непрозрачности */
+	opacity: 0.7;
 }
 
-/* Анимация появления */
 @keyframes fadeIn {
 	0% {
 		opacity: 0;

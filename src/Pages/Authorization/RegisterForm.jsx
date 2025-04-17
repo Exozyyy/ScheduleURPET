@@ -7,47 +7,51 @@ const RegisterForm = () => {
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
 	const [phoneNumber, setPhoneNumber] = useState('')
-	const [group, setGroup] = useState('')
-	const [groupNumber, setGroupNumber] = useState('')
-	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
-
-	const groupOptions = [
-		'ИСИП',
-		'ТН',
-		'Э',
-		'ОДЛ',
-		'БР',
-		'ПН',
-		'ИСИПУ',
-		'ОДЛУ',
-		'ПСО',
-		'ПСОУ',
-		'ПСА',
-	]
 
 	const phoneRegex = /^\+7\d{10}$/
 
+	const showNotification = (message, type = 'success') => {
+		const notification = document.createElement('div')
+		notification.classList.add('notification', type, 'show')
+		notification.textContent = message
+		document.body.appendChild(notification)
+
+		// Убираем уведомление через 5 секунд
+		setTimeout(() => {
+			notification.classList.remove('show')
+			setTimeout(() => {
+				document.body.removeChild(notification)
+			}, 500)
+		}, 5000)
+	}
+
 	const handleSubmit = async (e) => {
 		e.preventDefault()
+
 		setLoading(true)
 
+		// Проверка на совпадение паролей
 		if (password !== confirmPassword) {
-			setError('Пароли не совпадают')
+			showNotification('Пароли не совпадают', 'error')
 			setLoading(false)
 			return
 		}
 
+		// Проверка на формат номера телефона
 		if (!phoneRegex.test(phoneNumber)) {
-			setError('Неверный формат номера телефона')
+			showNotification('Неверный формат номера телефона', 'error')
 			setLoading(false)
 			return
 		}
 
-		const user = { email, username, password, group, groupNumber, phoneNumber }
+		const role = 'student'
+		const user = { username, email, phoneNumber, role, password }
+		console.log(user)
 
 		try {
-			const response = await fetch('/api/register', {
+			// Отправка данных на сервер
+			const response = await fetch('http://127.0.0.1:8000/register', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -64,9 +68,9 @@ const RegisterForm = () => {
 			localStorage.setItem('token', data.token)
 
 			setLoading(false)
-			alert('Регистрация успешна!')
+			showNotification('Регистрация успешна!')
 		} catch (err) {
-			setError(err.message)
+			showNotification(err.message, 'error') // Показываем ошибку с сервера
 			setLoading(false)
 		}
 	}
@@ -111,29 +115,6 @@ const RegisterForm = () => {
 						required
 					/>
 				</div>
-				<div className="group-container">
-					<div>
-						<label>Группа</label>
-						<select value={group} onChange={(e) => setGroup(e.target.value)} required>
-							<option value="">Направление</option>
-							{groupOptions.map((option, index) => (
-								<option key={index} value={option}>
-									{option}
-								</option>
-							))}
-						</select>
-					</div>
-					<div>
-						<label>Номер группы</label>
-						<input
-							type="text"
-							value={groupNumber}
-							onChange={(e) => setGroupNumber(e.target.value)}
-							placeholder="Номер группы"
-							required
-						/>
-					</div>
-				</div>
 				<div>
 					<label>Номер телефона</label>
 					<input
@@ -148,7 +129,6 @@ const RegisterForm = () => {
 					{loading ? 'Загрузка...' : 'Зарегистрироваться'}
 				</button>
 			</form>
-			{error && <div>{error}</div>}
 		</div>
 	)
 }
