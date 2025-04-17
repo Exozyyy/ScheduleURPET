@@ -50,7 +50,7 @@ const TableHac = () => {
 						<React.Fragment key={index}>
 							<tr>
 								<td colSpan="4" style={{ fontWeight: 'bold', backgroundColor: '#f0f0f0' }}>
-									{new Date(day.date).toLocaleDateString()}
+									{new Date(day.date).toLocaleDateString()}{' '}
 								</td>
 							</tr>
 							{day.sessions.map((session, sessionIndex) => (
@@ -68,5 +68,4 @@ const TableHac = () => {
 		</div>
 	)
 }
-
-export default TableHac
+export const PageUser = () => TableHac()

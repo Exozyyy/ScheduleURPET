@@ -1,17 +1,14 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import UserSchedule from './components/Users/Table'
-import AdminTable from './components/Admin/adminTable'
+import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { PageUser } from './components/Users/Table'
 
 function App() {
 	return (
-		<Router>
+		<BrowserRouter>
 			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/schedule" element={<Schedule />} />
+				<Route path="/" element={<PageUser />} />
 			</Routes>
-		</Router>
+		</BrowserRouter>
 	)
 }
 
