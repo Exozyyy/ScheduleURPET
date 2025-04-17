@@ -1,218 +1,104 @@
-/* app1.css */
-
-/* Общие стили */
-.timetable-container {
-	width: 95%;
-	max-width: 1200px;
-	margin: 20px auto;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	border-radius: 8px;
-	overflow: hidden;
-	animation: scaleIn 0.7s ease-out; /* Initial scaling animation */
-	background-color: #fff;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
+body {
+	background-color: #f7fafc;
+	font-family: 'Roboto', sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh; /* Это гарантирует, что body будет заполнять всю высоту экрана */
+	padding: 20px;
+}
+
+.timetable-container {
+	width: 100%;
+	max-width: 900px;
+	background-color: #ffffff;
+	border-radius: 8px;
+	padding: 2rem;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	animation: slideIn 0.5s ease-out;
+	display: flex;
+	flex-direction: column;
+	max-height: 90vh; /* Ограничиваем контейнер по высоте */
+	overflow-y: auto; /* Добавляем вертикальный скролл при переполнении */
+}
+
+h2 {
+	font-size: 2rem;
+	color: #333;
+	margin-bottom: 1.5rem;
+	text-align: center;
+}
+
+.group-select {
+	margin-bottom: 1.5rem;
+}
+
+.group-select label {
+	font-size: 1rem;
+	color: #666;
+	display: block;
+	margin-bottom: 0.5rem;
+	transition: color 0.3s ease;
+}
+
+.group-select select {
+	width: 100%;
+	padding: 1rem;
+	font-size: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	transition: border-color 0.3s ease;
+}
+
+.group-select select:focus {
+	outline: none;
+	border-color: #5a4ad1;
+}
+
+/* Таблица расписания */
 table {
 	width: 100%;
 	border-collapse: collapse;
-	transition: transform 0.3s ease; /* Add transition for table transformation */
-}
-
-table:hover {
-	transform: scale(1.02); /* Slight scale-up on hover for the entire table */
+	margin-top: 1.5rem;
 }
 
 th,
 td {
-	padding: 12px 15px;
+	padding: 1rem;
 	text-align: left;
-	border-bottom: 1px solid #ddd;
-	transition: background-color 0.3s ease, color 0.3s ease;
+	border: 1px solid #ddd;
 }
 
 th {
-	background-color: #3498db;
+	background-color: #5a4ad1;
 	color: white;
-	font-weight: bold;
-	text-transform: uppercase;
+	font-weight: normal;
 }
 
-tbody tr:nth-child(even) {
-	background-color: #ecf0f1;
+td {
+	background-color: #fafafa;
 }
 
-tbody tr:nth-child(odd) {
-	background-color: #f5f5f5;
-}
-
-tbody tr:hover {
-	background-color: #d0e9f2;
-}
-
-/* Стиль для заголовка дня */
-tbody tr > td[colspan='4'] {
-	font-weight: bold;
-	background-color: #95a5a6;
-	color: white;
+td[colspan='5'] {
 	text-align: center;
-	padding: 15px;
-	font-size: 1.1em;
-	animation: pulse 2s infinite alternate; /* Add pulse animation to day header */
+	font-weight: bold;
+	background-color: #f0f0f0;
 }
 
-/* Анимация для загрузки */
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
-}
-
-/* Стили для сообщений о загрузке и ошибке */
-div[role='status'] {
-	text-align: center;
-	padding: 20px;
-	font-size: 18px;
-	animation: fadeIn 0.5s ease-in-out;
-}
-
-div[role='status']:before {
-	content: '';
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	border: 3px solid rgba(0, 0, 0, 0.3);
-	border-top-color: #3498db;
-	border-radius: 50%;
-	animation: spin 1s linear infinite;
-	margin-right: 10px;
-}
-
-div[role='alert'] {
-	color: #e74c3c;
-	animation: shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
-/* Стиль для редактируемых ячеек */
-td > span {
-	display: block;
-	cursor: pointer;
-	transition: background-color 0.3s ease, transform 0.3s ease; /* Add transform transition */
-	padding: 8px;
-}
-
-td > span:hover {
-	background-color: #d3d3d3;
-	transform: scale(1.1); /* Slight scale-up on hover */
-}
-
-/* Стиль для input полей при редактировании */
-td > input[type='text'] {
-	width: 100%;
-	padding: 8px;
-	margin: 0;
-	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	font-size: 1em;
-	outline: none;
-	transition: border-color 0.3s ease, transform 0.3s ease; /* Add transform transition */
-}
-
-td > input[type='text']:focus {
-	border-color: #2ecc71;
-	box-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
-	transform: scale(1.05); /* Slight scale-up when focused */
-}
-
-/* Анимация появления строк */
-tbody tr {
-	animation: slideIn 0.3s ease-out forwards;
-	transform: translateY(-10px);
-	opacity: 0;
-}
-
-tbody tr:nth-child(odd) {
-	animation-delay: 0.1s;
-}
-
-tbody tr:nth-child(even) {
-	animation-delay: 0.2s;
-}
-
-/* Общие анимации */
-@keyframes fadeIn {
+/* Ключевая анимация для плавного появления */
+@keyframes slideIn {
 	from {
+		transform: translateY(-50px);
 		opacity: 0;
 	}
-	to {
-		opacity: 1;
-	}
-}
-
-@keyframes slideIn {
 	to {
 		transform: translateY(0);
 		opacity: 1;
-	}
-}
-
-@keyframes shake {
-	10%,
-	90% {
-		transform: translateX(-1px);
-	}
-	20%,
-	80% {
-		transform: translateX(2px);
-	}
-	30%,
-	50%,
-	70% {
-		transform: translateX(-4px);
-	}
-	40%,
-	60% {
-		transform: translateX(4px);
-	}
-}
-
-@keyframes scaleIn {
-	from {
-		transform: scale(0.8);
-		opacity: 0;
-	}
-	to {
-		transform: scale(1);
-		opacity: 1;
-	}
-}
-
-@keyframes pulse {
-	0% {
-		transform: scale(1);
-	}
-	100% {
-		transform: scale(1.05);
-	}
-}
-
-@media (max-width: 768px) {
-	.timetable-container {
-		width: 100%;
-		margin: 10px auto;
-	}
-
-	th,
-	td {
-		padding: 8px;
-		font-size: 0.9em;
-	}
-
-	tbody tr > td[colspan='4'] {
-		font-size: 1em;
-		padding: 10px;
 	}
 }
