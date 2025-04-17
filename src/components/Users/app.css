@@ -1,0 +1,81 @@
+/* Основной контейнер для таблицы */
+.timetable-container {
+	margin: 20px;
+	padding: 10px;
+	border: 2px solid #ccc;
+	border-radius: 10px;
+	background-color: #f9f9f9;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для самой таблицы */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+	table-layout: fixed;
+}
+
+/* Стили для заголовков таблицы */
+th,
+td {
+	padding: 15px;
+	text-align: left;
+	border: 1px solid #ddd;
+	font-size: 14px;
+	vertical-align: top;
+}
+
+/* Стили для заголовков столбцов */
+th {
+	background-color: #f1f1f1;
+	font-weight: bold;
+	color: #333;
+}
+
+/* Стили для четных строк таблицы (чередование фона) */
+tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+/* Подсветка строки при наведении */
+tr:hover {
+	background-color: #f1f1f1;
+}
+
+/* Стиль для первой колонки (дата) */
+td:first-child {
+	font-weight: bold;
+	background-color: #f4f4f4;
+	width: 150px; /* Устанавливаем фиксированную ширину для колонки с датой */
+}
+
+/* Стиль для ячеек с данными (парами) */
+td {
+	padding: 10px;
+	text-align: center;
+	word-wrap: break-word;
+}
+
+/* Стиль для пустых значений */
+td.empty {
+	color: #999;
+	font-style: italic;
+}
+
+/* Стиль для отображения времени, группы и кабинета в одной ячейке */
+td div {
+	margin-bottom: 5px;
+}
+
+/* Респонсивные стили: адаптация таблицы на мобильных устройствах */
+@media screen and (max-width: 768px) {
+	.timetable-container {
+		padding: 5px;
+	}
+	th,
+	td {
+		font-size: 12px;
+		padding: 8px;
+	}
+}

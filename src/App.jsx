@@ -1,13 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import TableHac from './components/Table'
+import React from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import UserSchedule from './components/Users/Table'
+import AdminTable from './components/Admin/adminTable'
 
 function App() {
 	return (
-		<>
-			<TableHac></TableHac>
-		</>
+		<Router>
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/schedule" element={<Schedule />} />
+			</Routes>
+		</Router>
 	)
 }
 
