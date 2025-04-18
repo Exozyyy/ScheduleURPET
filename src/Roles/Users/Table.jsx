@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './app.css'
+import LogoutButton from '../Admin/ButtonLogout'
 
 const TableHac = () => {
 	const [schedule, setSchedule] = useState([])
@@ -67,6 +68,7 @@ const TableHac = () => {
 
 	return (
 		<div className="timetable-container">
+			<LogoutButton />
 			<div className="group-select">
 				<label htmlFor="group-select">Выберите группу: </label>
 				<select id="group-select" value={group} onChange={handleGroupChange}>

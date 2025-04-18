@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './Schedule.css'
+import { useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
 import LogoutButton from './ButtonLogout'
 
 const TeacherScheduleSearch = () => {
@@ -7,15 +9,24 @@ const TeacherScheduleSearch = () => {
 	const [schedule, setSchedule] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(null)
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		const token = localStorage.getItem('token')
 		if (!token) {
-			window.location.href = '/login'
+			alert('Пожалуйста, войдите в систему!')
+			navigate('/login')
 			return
 		}
-	}, [])
 
+		const decodedToken = jwtDecode(token)
+		const userRole = decodedToken.sub
+
+		if (userRole !== 'admin') {
+			alert('У вас нет доступа к этой странице!')
+			navigate('/user')
+		}
+	}, [navigate])
 	const handleInputChange = (e) => {
 		setTeacherName(e.target.value)
 	}

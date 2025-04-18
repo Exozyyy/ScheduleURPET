@@ -14,6 +14,7 @@ const LoginForm = () => {
 		e.preventDefault()
 		setLoading(true)
 
+		// Создаем строку с параметрами для отправки
 		const formData = new URLSearchParams()
 		formData.append('username', username)
 		formData.append('password', password)
@@ -34,18 +35,21 @@ const LoginForm = () => {
 			const data = await response.json()
 
 			localStorage.setItem('token', data.access_token)
+
+			localStorage.setItem('refresh_token', data.refresh_token)
 			const token = localStorage.getItem('token')
+
 			if (token) {
 				const decodedToken = jwtDecode(token)
-				console.log('Декодированный токен:', decodedToken)
+				console.log(decodedToken)
 
-				if (decodedToken.role == 'admin') {
+				const userRole = decodedToken.sub
+				console.log('User Role:', userRole)
+				if (userRole === 'admin') {
 					navigate('/admin')
 				} else {
 					navigate('/user')
 				}
-			} else {
-				console.log('JWT токен не найден')
 			}
 
 			setLoading(false)

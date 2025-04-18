@@ -12,6 +12,24 @@ const TableHacAdmin = () => {
 	const [editedSchedule, setEditedSchedule] = useState(null)
 	const [group, setGroup] = useState('ИСИП-309')
 	const [isSaved, setIsSaved] = useState(true)
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		const token = localStorage.getItem('token')
+		if (!token) {
+			alert('Пожалуйста, войдите в систему!')
+			navigate('/login')
+			return
+		}
+
+		const decodedToken = jwtDecode(token)
+		const userRole = decodedToken.sub
+
+		if (userRole !== 'admin') {
+			alert('У вас нет доступа к этой странице!')
+			navigate('/user')
+		}
+	}, [navigate])
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -49,7 +67,7 @@ const TableHacAdmin = () => {
 			index,
 			field,
 			value,
-			sessionId: updatedSchedule[index].id, // Привязка ID к измененной строке
+			sessionId: updatedSchedule[index].id,
 		})
 
 		setIsSaved(false)
@@ -75,7 +93,6 @@ const TableHacAdmin = () => {
 			try {
 				const { sessionId, field, value } = editedSchedule
 
-				// Отправка данных на сервер с использованием PATCH
 				const response = await fetch(`http://127.0.0.1:8000/update/${sessionId}`, {
 					method: 'PATCH',
 					headers: {
@@ -94,7 +111,6 @@ const TableHacAdmin = () => {
 				const result = await response.json()
 				console.log(result)
 
-				// Обновляем только измененную сессию в расписании
 				const updatedSchedule = [...schedule]
 				updatedSchedule[editedSchedule.index][editedSchedule.field] = editedSchedule.value
 				setSchedule(updatedSchedule)
