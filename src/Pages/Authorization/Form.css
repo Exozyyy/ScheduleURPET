@@ -126,19 +126,16 @@ button:active {
 		opacity: 1;
 	}
 }
-/* Контейнер для направления и номера группы */
 .group-container {
 	display: flex;
 	gap: 10px;
 	margin-bottom: 1.5rem;
 }
 
-/* Каждый отдельный блок для поля (группа и номер группы) */
 .group-container > div {
 	flex: 1;
 }
 
-/* Стили для меток */
 .group-container label {
 	font-size: 1rem;
 	color: #666;
@@ -147,7 +144,6 @@ button:active {
 	transition: color 0.3s ease;
 }
 
-/* Стили для селекта (направление) */
 .group-container select {
 	width: 100%;
 	padding: 1rem;
@@ -157,13 +153,11 @@ button:active {
 	transition: border-color 0.3s ease;
 }
 
-/* Фокус на поле select */
 .group-container select:focus {
 	outline: none;
 	border-color: #5a4ad1;
 }
 
-/* Стили для поля ввода для номера группы */
 .group-container input {
 	width: 100%;
 	padding: 1rem;
@@ -173,12 +167,10 @@ button:active {
 	transition: border-color 0.3s ease;
 }
 
-/* Фокус на поле ввода номера группы */
 .group-container input:focus {
 	outline: none;
 	border-color: #5a4ad1;
 }
-/* Уведомления */
 .notification {
 	position: fixed;
 	top: 20px;
@@ -201,9 +193,9 @@ button:active {
 }
 
 .notification.error {
-	background-color: #f44336; /* Красный для ошибок */
+	background-color: #f44336;
 }
 
 .notification.success {
-	background-color: #4caf50; /* Зеленый для успеха */
+	background-color: #4caf50;
 }

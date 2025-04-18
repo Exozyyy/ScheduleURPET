@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { jwtDecode } from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
-import LogoutButton from './ButtonLogout'
+import LogoutButton from '../../Components/ButtonLogout'
 
 const TableHacAdmin = () => {
 	const [schedule, setSchedule] = useState([])

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import './app.css'
-import LogoutButton from '../Admin/ButtonLogout'
+import './Table.css'
+import LogoutButton from '../../Components/ButtonLogout'
 
 const TableHac = () => {
 	const [schedule, setSchedule] = useState([])

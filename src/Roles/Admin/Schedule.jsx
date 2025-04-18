@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './Schedule.css'
 import { useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
-import LogoutButton from './ButtonLogout'
+import LogoutButton from '../../Components/ButtonLogout'
 
 const TeacherScheduleSearch = () => {
 	const [teacherName, setTeacherName] = useState('')
