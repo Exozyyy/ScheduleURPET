@@ -1,11 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Schedule.css'
+import LogoutButton from './ButtonLogout'
 
 const TeacherScheduleSearch = () => {
 	const [teacherName, setTeacherName] = useState('')
 	const [schedule, setSchedule] = useState([])
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(null)
+
+	useEffect(() => {
+		const token = localStorage.getItem('token')
+		if (!token) {
+			window.location.href = '/login'
+			return
+		}
+	}, [])
 
 	const handleInputChange = (e) => {
 		setTeacherName(e.target.value)
@@ -44,7 +53,7 @@ const TeacherScheduleSearch = () => {
 					id="teacherName"
 					value={teacherName}
 					onChange={handleInputChange}
-					placeholder="Введите фамилию преподавателя"
+					placeholder="Введите фамилию"
 				/>
 			</div>
 
@@ -81,7 +90,7 @@ const TeacherScheduleSearch = () => {
 				</table>
 			)}
 
-			{schedule.length === 0 && !loading && <div>"{teacherName}" отдыхает</div>}
+			{schedule.length === !0 && !loading && <div>{teacherName} отдыхает</div>}
 		</div>
 	)
 }

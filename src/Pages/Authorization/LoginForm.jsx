@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './Form.css'
+import { jwtDecode } from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
+	const navigate = useNavigate()
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		setLoading(true)
 
-		const user = { username, password }
+		const formData = new URLSearchParams()
+		formData.append('username', username)
+		formData.append('password', password)
 
 		try {
 			const response = await fetch('http://127.0.0.1:8000/login', {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json',
+					'Content-Type': 'application/x-www-form-urlencoded',
 				},
-				body: JSON.stringify(user),
+				body: formData.toString(),
 			})
 
 			if (!response.ok) {
@@ -28,7 +33,20 @@ const LoginForm = () => {
 
 			const data = await response.json()
 
-			localStorage.setItem('token', data.token)
+			localStorage.setItem('token', data.access_token)
+			const token = localStorage.getItem('token')
+			if (token) {
+				const decodedToken = jwtDecode(token)
+				console.log('Декодированный токен:', decodedToken)
+
+				if (decodedToken.role == 'admin') {
+					navigate('/admin')
+				} else {
+					navigate('/user')
+				}
+			} else {
+				console.log('JWT токен не найден')
+			}
 
 			setLoading(false)
 			alert('Вход успешен!')
@@ -46,9 +64,9 @@ const LoginForm = () => {
 			</h2>
 			<form onSubmit={handleSubmit}>
 				<div>
-					<label>Логин</label>
+					<label>email</label>
 					<input
-						type="text"
+						type="email"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
 						required

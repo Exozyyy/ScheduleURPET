@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './app.css' // Импортируем CSS файл для стилей таблицы
+import './app.css'
 
 const TableHac = () => {
 	const [schedule, setSchedule] = useState([])
@@ -51,10 +51,10 @@ const TableHac = () => {
 		}
 
 		fetchData()
-	}, [group]) // Загрузка данных при изменении группы
+	}, [group])
 
 	const handleGroupChange = (e) => {
-		setGroup(e.target.value) // Обновляем группу при изменении
+		setGroup(e.target.value)
 	}
 
 	if (loading) {
@@ -77,7 +77,6 @@ const TableHac = () => {
 					))}
 				</select>
 			</div>
-
 			<table>
 				<thead>
 					<tr>
@@ -91,7 +90,10 @@ const TableHac = () => {
 					{schedule.map((day, index) => (
 						<React.Fragment key={index}>
 							<tr>
-								<td colSpan="5" style={{ fontWeight: 'bold', backgroundColor: '#f0f0f0' }}>
+								<td
+									colSpan="5"
+									style={{ fontWeight: 'bold', backgroundColor: '#f0f0f0', color: '#333' }}
+								>
 									{new Date(day.date).toLocaleDateString()}
 								</td>
 							</tr>

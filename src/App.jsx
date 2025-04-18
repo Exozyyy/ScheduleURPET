@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { PageUser } from './components/Users/Table'
-import { PageAdmin } from './components/Admin/adminTable'
+import { PageUser } from './Roles/Users/Table'
+import { PageAdmin } from './Roles/Admin/adminTable'
 import { HomePage } from './Pages/HomePage'
 import { Register } from './Pages/Authorization/RegisterForm'
 import { Login } from './Pages/Authorization/LoginForm'
-import { PageTeachers } from './components/Admin/Schedule'
+import { PageTeachers } from './Roles/Admin/Schedule'
 
 function App() {
 	return (

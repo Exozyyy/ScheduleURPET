@@ -10,7 +10,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh; /* Это гарантирует, что body будет заполнять всю высоту экрана */
+	min-height: 100vh;
 	padding: 20px;
 }
 
@@ -24,8 +24,8 @@ body {
 	animation: slideIn 0.5s ease-out;
 	display: flex;
 	flex-direction: column;
-	max-height: 90vh; /* Ограничиваем контейнер по высоте */
-	overflow-y: auto; /* Добавляем вертикальный скролл при переполнении */
+	max-height: 90vh;
+	overflow-y: auto;
 }
 
 h2 {
@@ -61,7 +61,6 @@ h2 {
 	border-color: #5a4ad1;
 }
 
-/* Таблица расписания */
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -85,13 +84,17 @@ td {
 	background-color: #fafafa;
 }
 
+/* Сделаем текст времени черным */
+td.time {
+	color: black; /* Черный цвет текста для времени */
+}
+
 td[colspan='5'] {
 	text-align: center;
 	font-weight: bold;
 	background-color: #f0f0f0;
 }
 
-/* Ключевая анимация для плавного появления */
 @keyframes slideIn {
 	from {
 		transform: translateY(-50px);
@@ -102,6 +105,46 @@ td[colspan='5'] {
 		opacity: 1;
 	}
 }
+
 .buttonForTeacher {
 	margin-bottom: 50px;
+}
+/* Стили для выделенной даты */
+td.date {
+	font-weight: bold;
+	color: #0066cc; /* Синий цвет текста */
+	background-color: #f0f0f0; /* Светлый фон для выделенной даты */
+	text-align: center;
+}
+
+/* Для других элементов таблицы */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 1.5rem;
+}
+
+th,
+td {
+	padding: 1rem;
+	text-align: left;
+	border: 1px solid #ddd;
+}
+
+th {
+	background-color: #ff6f61;
+	color: white;
+	font-weight: normal;
+}
+
+td {
+	background-color: #fafafa;
+	color: #333;
+}
+
+td[colspan='5'] {
+	text-align: center;
+	font-weight: bold;
+	background-color: #ff6f61;
+	color: white;
 }

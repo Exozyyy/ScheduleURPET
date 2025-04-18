@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { jwtDecode } from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
+import LogoutButton from './ButtonLogout'
 
 const TableHacAdmin = () => {
 	const [schedule, setSchedule] = useState([])
@@ -6,22 +9,21 @@ const TableHacAdmin = () => {
 	const [error, setError] = useState(null)
 	const [editedCell, setEditedCell] = useState({})
 	const [isEditing, setIsEditing] = useState(false)
-	const [editedSchedule, setEditedSchedule] = useState(null) // Track edited data
+	const [editedSchedule, setEditedSchedule] = useState(null)
 	const [group, setGroup] = useState('ИСИП-309')
-	const [teacher, setTeacher] = useState('') // Track teacher name
-	const [isSaved, setIsSaved] = useState(true) // To track whether the data is saved
+	const [isSaved, setIsSaved] = useState(true)
 
 	useEffect(() => {
 		const fetchData = async () => {
 			setLoading(true)
 			try {
-				const response = await fetch(`http://localhost:8000/ras${group}`)
+				const response = await fetch(`http://127.0.0.1:8000/by-group?group=${group}`)
 				if (!response.ok) {
 					throw new Error('Ошибка при загрузке данных')
 				}
 				const data = await response.json()
 				console.log(data)
-				setSchedule(data.schedule)
+				setSchedule(data)
 			} catch (error) {
 				setError(error.message)
 			} finally {
@@ -31,39 +33,26 @@ const TableHacAdmin = () => {
 
 		fetchData()
 	}, [group])
-	useEffect(() => {
-		const fetchData = async () => {
-			setLoading(true)
-			try {
-				const response = await fetch(`http://127.0.0.1:8000/by-teacher?name=${teacher}`)
-				if (!response.ok) {
-					throw new Error('Ошибка при загрузке данных')
-				}
-				const data = await response.json()
-				console.log(data)
-				setSchedule(data.schedule)
-			} catch (error) {
-				setError(error.message)
-			} finally {
-				setLoading(false)
-			}
-		}
-	})
 
-	const handleCellClick = (dayIndex, sessionIndex, field) => {
-		setEditedCell({ dayIndex, sessionIndex, field })
+	const handleCellClick = (index, field) => {
+		setEditedCell({ index, field })
 		setIsEditing(true)
 	}
 
 	const handleChange = (e) => {
 		const { value } = e.target
-		const { dayIndex, sessionIndex, field } = editedCell
+		const { index, field } = editedCell
 		const updatedSchedule = [...schedule]
-		updatedSchedule[dayIndex].sessions[sessionIndex][field] = value
+		updatedSchedule[index][field] = value
 
-		// Update the edited schedule state
-		setEditedSchedule(updatedSchedule)
-		setIsSaved(false) // Mark as unsaved
+		setEditedSchedule({
+			index,
+			field,
+			value,
+			sessionId: updatedSchedule[index].id, // Привязка ID к измененной строке
+		})
+
+		setIsSaved(false)
 	}
 
 	const handleBlur = () => {
@@ -84,12 +73,18 @@ const TableHacAdmin = () => {
 		if (editedSchedule) {
 			setLoading(true)
 			try {
-				const response = await fetch(`http://localhost:8000/ras${group}`, {
-					method: 'POST',
+				const { sessionId, field, value } = editedSchedule
+
+				// Отправка данных на сервер с использованием PATCH
+				const response = await fetch(`http://127.0.0.1:8000/update/${sessionId}`, {
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ schedule: editedSchedule }),
+					body: JSON.stringify({
+						field: field,
+						value: value,
+					}),
 				})
 
 				if (!response.ok) {
@@ -99,7 +94,10 @@ const TableHacAdmin = () => {
 				const result = await response.json()
 				console.log(result)
 
-				setSchedule(editedSchedule)
+				// Обновляем только измененную сессию в расписании
+				const updatedSchedule = [...schedule]
+				updatedSchedule[editedSchedule.index][editedSchedule.field] = editedSchedule.value
+				setSchedule(updatedSchedule)
 				setIsSaved(true)
 				alert('Расписание успешно сохранено!')
 			} catch (error) {
@@ -120,6 +118,7 @@ const TableHacAdmin = () => {
 
 	return (
 		<div className="timetable-container">
+			<LogoutButton />
 			<button id="buttonForTeacher" onClick={() => (window.location.href = '/scheduleteachers')}>
 				Расписание для учителей
 			</button>
@@ -164,87 +163,64 @@ const TableHacAdmin = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{schedule.map((day, dayIndex) => (
-						<React.Fragment key={dayIndex}>
-							<tr>
-								<td colSpan="5">{day.date}</td>
-							</tr>
-							{/* Сессии для этой даты */}
-							{day.sessions.map((session, sessionIndex) => (
-								<tr key={sessionIndex}>
-									<td>{session.time}</td>
-									<td>
-										{isEditing &&
-										editedCell.dayIndex === dayIndex &&
-										editedCell.sessionIndex === sessionIndex &&
-										editedCell.field === 'subject' ? (
-											<input
-												type="text"
-												value={session.subject}
-												onChange={handleChange}
-												onBlur={handleBlur}
-												onKeyDown={handleKeyPress}
-												autoFocus
-											/>
-										) : (
-											<span
-												onClick={() =>
-													handleCellClick(dayIndex, sessionIndex, 'subject')
-												}
-											>
-												{session.subject}
-											</span>
-										)}
-									</td>
-									<td>
-										{isEditing &&
-										editedCell.dayIndex === dayIndex &&
-										editedCell.sessionIndex === sessionIndex &&
-										editedCell.field === 'teacher' ? (
-											<input
-												type="text"
-												value={session.teacher}
-												onChange={handleChange}
-												onBlur={handleBlur}
-												onKeyDown={handleKeyPress}
-												autoFocus
-											/>
-										) : (
-											<span
-												onClick={() =>
-													handleCellClick(dayIndex, sessionIndex, 'teacher')
-												}
-											>
-												{session.teacher}
-											</span>
-										)}
-									</td>
-									<td>
-										{isEditing &&
-										editedCell.dayIndex === dayIndex &&
-										editedCell.sessionIndex === sessionIndex &&
-										editedCell.field === 'cabinet' ? (
-											<input
-												type="text"
-												value={session.cabinet}
-												onChange={handleChange}
-												onBlur={handleBlur}
-												onKeyDown={handleKeyPress}
-												autoFocus
-											/>
-										) : (
-											<span
-												onClick={() =>
-													handleCellClick(dayIndex, sessionIndex, 'cabinet')
-												}
-											>
-												{session.cabinet}
-											</span>
-										)}
-									</td>
-								</tr>
-							))}
-						</React.Fragment>
+					{schedule.map((session, index) => (
+						<tr key={index}>
+							<td>{session.time}</td>
+							<td>
+								{isEditing &&
+								editedCell.index === index &&
+								editedCell.field === 'subject' ? (
+									<input
+										type="text"
+										value={session.subject}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										onKeyDown={handleKeyPress}
+										autoFocus
+									/>
+								) : (
+									<span onClick={() => handleCellClick(index, 'subject')}>
+										{session.subject}
+									</span>
+								)}
+							</td>
+							<td>
+								{isEditing &&
+								editedCell.index === index &&
+								editedCell.field === 'teacher' ? (
+									<input
+										type="text"
+										value={session.teacher}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										onKeyDown={handleKeyPress}
+										autoFocus
+									/>
+								) : (
+									<span onClick={() => handleCellClick(index, 'teacher')}>
+										{session.teacher}
+									</span>
+								)}
+							</td>
+							<td>
+								{isEditing &&
+								editedCell.index === index &&
+								editedCell.field === 'cabinet' ? (
+									<input
+										type="text"
+										value={session.cabinet}
+										onChange={handleChange}
+										onBlur={handleBlur}
+										onKeyDown={handleKeyPress}
+										autoFocus
+									/>
+								) : (
+									<span onClick={() => handleCellClick(index, 'cabinet')}>
+										{session.cabinet}
+									</span>
+								)}
+							</td>
+						</tr>
 					))}
 				</tbody>
 			</table>
